@@ -1,0 +1,26 @@
+## Database Properties
+spring:
+  application:
+    name: freelancer-service
+  datasource:
+    url: jdbc:postgresql://${FREELANCER_POSTGRESQL_SERVICE_HOST}:${FREELANCER_POSTGRESQL_SERVICE_PORT}/postgres
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    
+
+
