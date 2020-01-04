@@ -1,3 +1,5 @@
+#!/bin/sh
+
 echo '{
         "emailAddress": "jarmstrong@gmail.com",
         "firstName": "John",

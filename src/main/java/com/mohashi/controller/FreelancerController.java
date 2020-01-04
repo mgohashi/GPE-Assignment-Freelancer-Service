@@ -1,9 +1,10 @@
-package com.mohashi;
+package com.mohashi.controller;
 
 import java.util.List;
 
+import com.mohashi.FreelancerNotFoundException;
 import com.mohashi.model.Freelancer;
-import com.mohashi.repository.FreelancerRepository;
+import com.mohashi.service.FreelancerService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,42 +15,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class FreelacerController {
+public class FreelancerController {
 
-    private FreelancerRepository repository;
+    private FreelancerService service;
 
-    public FreelacerController(FreelancerRepository repository) {
-        this.repository = repository;
+    public FreelancerController(FreelancerService service) {
+        this.service = service;
     }
 
     @PostMapping("/freelancers")
     public Freelancer newFreelancer(@RequestBody Freelancer freelancer) {
-        return this.repository.save(freelancer);
+        return this.service.save(freelancer);
     }
 
     @GetMapping("/freelancers")
     public List<Freelancer> getAll() {
-        return this.repository.findAll();
+        return this.service.findAll();
     }
 
     @GetMapping("/freelancers/{id}")
     public Freelancer get(@PathVariable Long id) {
-        return this.repository.findById(id).orElseThrow(() -> new FreelancerNotFoundException(id));
+        return this.service.findById(id).orElseThrow(() -> new FreelancerNotFoundException(id));
     }
 
     @PutMapping("/freelancers/{id}")
     public Freelancer replaceFreelancer(@RequestBody Freelancer newFreelancer, @PathVariable Long id) {
-        return repository.findById(id).map(freelancer -> {
+        return service.findById(id).map(freelancer -> {
             freelancer.setFirstName(newFreelancer.getFirstName());
             freelancer.setLastName(newFreelancer.getLastName());
             freelancer.setEmailAddress(newFreelancer.getEmailAddress());
             freelancer.setSkills(newFreelancer.getSkills());
-            return repository.save(freelancer);
+            return service.save(freelancer);
         }).orElseThrow(() -> new FreelancerNotFoundException(id));
     }
 
     @DeleteMapping("/freelancers/{id}")
     public void deleteFreelancer(@PathVariable Long id) {
-        repository.deleteById(id);
+        service.deleteById(id);
     }
 }
